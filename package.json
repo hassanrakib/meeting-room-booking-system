@@ -1,0 +1,19 @@
+{
+  "name": "meeting-room-booking-system",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hassanrakib/meeting-room-booking-system.git"
+  },
+  "author": "Rakib Hassan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hassanrakib/meeting-room-booking-system/issues"
+  },
+  "homepage": "https://github.com/hassanrakib/meeting-room-booking-system#readme",
+  "description": ""
+}
