@@ -1,17 +1,19 @@
 // @ts-check
 
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import globals from 'globals';
+import eslint from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import globals from 'globals'
+import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default tseslint.config(
     {
-        ignores: ["dist/**"]
-    },
-    eslint.configs.recommended,
-    ...tseslint.configs.strictTypeChecked,
-    ...tseslint.configs.stylisticTypeChecked,
-    {
+        files: ['src/**'],
+        ignores: ['dist/**', 'node_modules/**'],
+        extends: [
+            eslint.configs.recommended,
+            ...tseslint.configs.strictTypeChecked,
+            ...tseslint.configs.stylisticTypeChecked,
+        ],
         languageOptions: {
             parser: tseslint.parser,
             parserOptions: {
@@ -19,8 +21,10 @@ export default tseslint.config(
                 tsconfigRootDir: import.meta.dirname,
             },
             globals: {
-                ...globals.browser, ...globals.node
-            }
+                ...globals.browser,
+                ...globals.node,
+            },
         },
     },
-);
+    eslintConfigPrettier
+)
