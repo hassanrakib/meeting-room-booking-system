@@ -7,8 +7,7 @@ import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default tseslint.config(
     {
-        files: ['src/**'],
-        ignores: ['dist/**', 'node_modules/**'],
+        files: ['src/**/*.ts'],
         extends: [
             eslint.configs.recommended,
             ...tseslint.configs.strictTypeChecked,
