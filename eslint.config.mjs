@@ -1,9 +1,9 @@
 // @ts-check
 
-import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
-import globals from 'globals'
-import eslintConfigPrettier from 'eslint-config-prettier'
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import globals from 'globals';
+import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default tseslint.config(
     {
@@ -24,6 +24,9 @@ export default tseslint.config(
                 ...globals.node,
             },
         },
+        rules: {
+            '@typescript-eslint/no-non-null-assertion': 'off',
+        },
     },
     eslintConfigPrettier
-)
+);
