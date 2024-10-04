@@ -1,8 +1,8 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 
-const catchAsync = (controllerFn: RequestHandler) => {
+const catchAsync = (routeHandler: RequestHandler) => {
     return (req: Request, res: Response, next: NextFunction) => {
-        Promise.resolve(controllerFn(req, res, next)).catch((err: unknown) => {
+        Promise.resolve(routeHandler(req, res, next)).catch((err: unknown) => {
             next(err);
         });
     };
