@@ -24,7 +24,7 @@ const userSchema = new Schema<IUser>({
                     minSymbols: 0,
                 });
             },
-            message: 'Password is not enough strong',
+            message: 'Password must be strong!',
         },
         select: false,
     },
