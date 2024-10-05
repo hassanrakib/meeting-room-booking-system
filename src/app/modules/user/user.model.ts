@@ -43,17 +43,22 @@ const userSchema = new Schema<IUser>({
             message: '{VALUE} is not supported!',
         },
     },
+}, {
+    toJSON: {
+        transform(doc, ret) {
+            delete ret.password
+            return ret;
+        },
+    }
 });
 
 // middlewares(aka 'pre' and 'post' hooks) on this schema
-userSchema.pre('save', async function() {
+userSchema.pre('save', async function () {
     // asyn/await use in 'pre' doesn't need to call 'next'
-    this.password = await bcrypt.hash(this.password, Number(config.bcrypt_salt_rounds));
+    this.password = await bcrypt.hash(
+        this.password,
+        Number(config.bcrypt_salt_rounds)
+    );
 });
-
-// password field is omitted whenever a user is converted to a JSON object to send to the client
-userSchema.methods.toJSON = function () {
-    console.log(this);
-}
 
 export const User = model<IUser>('User', userSchema);
