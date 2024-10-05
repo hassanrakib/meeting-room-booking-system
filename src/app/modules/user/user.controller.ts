@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 import catchAsync from '../../utils/catch-async';
 import sendResponse from '../../utils/send-response';
 import { UserServices } from './user.service';
-import { IUser } from './user.interface';
+import { ILoginCredentials, IUser } from './user.interface';
 
 // signup a new user
 const signUp = catchAsync(async (req: { body: IUser }, res) => {
@@ -17,6 +17,20 @@ const signUp = catchAsync(async (req: { body: IUser }, res) => {
     });
 });
 
+const logIn = catchAsync(async (req: {body: ILoginCredentials}, res) => {
+    // call the service function
+    const loggedInUser = await UserServices.authenticateAndFetchUserFromDB(req.body);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'User logged in successfully!',
+        token: 'token',
+        data: loggedInUser,
+    });
+});
+
 export const UserControllers = {
     signUp,
+    logIn,
 };

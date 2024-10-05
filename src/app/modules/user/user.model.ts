@@ -61,4 +61,9 @@ userSchema.pre('save', async function () {
     );
 });
 
+// instance methods
+userSchema.methods.checkPassword = async function(password: string) {
+    return await bcrypt.compare(password, (this as IUser).password);
+}
+
 export const User = model<IUser>('User', userSchema);

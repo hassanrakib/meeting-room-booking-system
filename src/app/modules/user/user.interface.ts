@@ -11,3 +11,8 @@ export interface IUser {
     address: string;
     role: UserRole;
 }
+
+export interface ILoginCredentials {
+    email: string;
+    password: string;
+}
