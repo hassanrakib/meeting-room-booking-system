@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Response } from 'express';
 
 interface ResponseData<T> {
     statusCode: number;

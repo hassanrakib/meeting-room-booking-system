@@ -14,7 +14,8 @@ const createUserSchema = z.object({
         password: z.string({ required_error: 'Password is required!' }).refine(
             (password) =>
                 isStrongPassword(password, {
-                    minSymbols: 0,
+                    minNumbers: 0,
+                    minUppercase: 0,
                 }),
             {
                 message: 'Password must be strong!',
