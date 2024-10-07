@@ -1,5 +1,9 @@
+import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
 import { ILoginCredentials, IUser } from './user.interface';
 import { User } from './user.model';
+import { createToken } from './user.utils';
+import config from '../../config';
 
 // user creation
 const insertNewUserToDB = async (user: IUser) => {
@@ -8,18 +12,36 @@ const insertNewUserToDB = async (user: IUser) => {
 };
 
 // authenticate user and response with the user object
-const authenticateAndFetchUserFromDB = async (
-    loginCredentials: ILoginCredentials
-) => {
+const authenticateAndFetchUserFromDB = async ({
+    email,
+    password,
+}: ILoginCredentials) => {
     // get the user
-    const user = await User.findOne({email: loginCredentials.email});
+    const user = await User.findOne({ email });
 
     // check if user does exist in the db
-    if(!user) {
-        throw new Error('')
+    if (!user) {
+        throw new AppError(httpStatus.NOT_FOUND, 'The user is not found!');
     }
 
-    return user;
+    // check password
+    const isPasswordMatched = await user.checkPassword(password);
+
+    // if not matched
+    if (!isPasswordMatched) {
+        throw new AppError(httpStatus.FORBIDDEN, 'Password did not match!');
+    }
+
+    //** Access Granted Here **//
+
+    // generate a jwt token
+    const accessToken = createToken(
+        { email: user.email, role: user.role },
+        config.jwt_access_secret!,
+        config.jwt_access_expires_in!
+    );
+
+    return { user, accessToken };
 };
 
 export const UserServices = {

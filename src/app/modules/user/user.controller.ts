@@ -17,16 +17,17 @@ const signUp = catchAsync(async (req: { body: IUser }, res) => {
     });
 });
 
-const logIn = catchAsync(async (req: {body: ILoginCredentials}, res) => {
+const logIn = catchAsync(async (req: { body: ILoginCredentials }, res) => {
     // call the service function
-    const loggedInUser = await UserServices.authenticateAndFetchUserFromDB(req.body);
+    const { user, accessToken } =
+        await UserServices.authenticateAndFetchUserFromDB(req.body);
 
     sendResponse(res, {
         statusCode: 200,
         success: true,
         message: 'User logged in successfully!',
-        token: 'token',
-        data: loggedInUser,
+        token: accessToken,
+        data: user,
     });
 });
 

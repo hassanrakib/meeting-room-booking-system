@@ -1,10 +1,10 @@
 import { model, Schema } from 'mongoose';
-import { IUser, UserRole } from './user.interface';
+import { IUser, IUserMethods, UserModel, UserRole } from './user.interface';
 import { isStrongPassword, isEmail } from 'validator';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     name: { type: String, required: [true, 'Name is required!'] },
     email: {
         type: String,
@@ -66,4 +66,4 @@ userSchema.methods.checkPassword = async function(password: string) {
     return await bcrypt.compare(password, (this as IUser).password);
 }
 
-export const User = model<IUser>('User', userSchema);
+export const User = model<IUser, UserModel>('User', userSchema);
