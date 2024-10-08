@@ -16,8 +16,8 @@ const authenticateAndFetchUserFromDB = async ({
     email,
     password,
 }: ILoginCredentials) => {
-    // get the user
-    const user = await User.findOne({ email });
+    // get the user with the password field because it was omitted in the schema type definition
+    const user = await User.findOne({ email }).select("+password");
 
     // check if user does exist in the db
     if (!user) {
