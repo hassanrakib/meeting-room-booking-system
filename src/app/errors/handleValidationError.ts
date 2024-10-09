@@ -12,7 +12,7 @@ export default function handleValidationError(
 
     return {
         statusCode: httpStatus.BAD_REQUEST,
-        message: 'Mongoose validation error!',
+        message: 'Validation Error!',
         errorMessages,
     };
 }
