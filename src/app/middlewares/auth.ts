@@ -10,7 +10,7 @@ import { CustomJwtPayload } from '../interface';
 const auth = (...userRoles: UserRole[]) => {
     return catchAsync(async (req, res, next) => {
         // get the token from the request's header
-        const token = req.headers.authorization;
+        const token = req.headers.authorization?.split(" ")[1];
 
         // if token is not sent with the client request
         if(!token) {

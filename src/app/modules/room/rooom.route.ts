@@ -7,6 +7,15 @@ import { UserRole } from '../user/user.interface';
 
 const router = express.Router();
 
-router.post("/", auth(UserRole.Admin), validateRequest(RoomValidations.createRoomSchema), RoomControllers.createRoom)
+// create room
+router.post(
+    '/',
+    auth(UserRole.Admin),
+    validateRequest(RoomValidations.createRoomSchema),
+    RoomControllers.createRoom
+);
+
+// get a room by _id
+router.get('/:id', RoomControllers.getARoomById);
 
 export const RoomRoutes = router;
