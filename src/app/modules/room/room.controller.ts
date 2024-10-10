@@ -11,24 +11,49 @@ const createRoom = catchAsync(async (req: { body: IRoom }, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'Room added successfully',
+        message: 'Room added successfully!',
         data: newRoom,
     });
 });
 
 // get a room by _id
 const getARoomById = catchAsync(async (req, res) => {
-    const room = await RoomServices.retrieveARoomByIdFromDB(req.params.id)
+    const room = await RoomServices.retrieveARoomByIdFromDB(req.params.id);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: "Room retrieved successfully",
+        message: 'Room retrieved successfully!',
         data: room,
+    });
+});
+
+// get all rooms
+const getAllRooms = catchAsync(async (req, res) => {
+    const rooms = await RoomServices.retrieveRoomsFromDB();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Rooms retrieved successfully!',
+        data: rooms,
+    });
+});
+
+// update a room by _id
+const updateARoomById = catchAsync(async (req, res) => {
+    // const updatedRoom = 
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Room updated successfully!",
+        data: updatedRoom,
     })
 })
 
 export const RoomControllers = {
     createRoom,
     getARoomById,
+    getAllRooms,
 };

@@ -7,9 +7,14 @@ const insertNewRoomToDB = async (room: IRoom) => {
 
 const retrieveARoomByIdFromDB = async (id: string) => {
     return await Room.findById(id);
-}
+};
+
+const retrieveRoomsFromDB = async () => {
+    return await Room.find();
+};
 
 export const RoomServices = {
     insertNewRoomToDB,
     retrieveARoomByIdFromDB,
+    retrieveRoomsFromDB,
 };

@@ -26,6 +26,9 @@ const createRoomSchema = z.object({
     }),
 });
 
+const updateRoomScheama = createRoomSchema.deepPartial();
+
 export const RoomValidations = {
     createRoomSchema,
+    updateRoomScheama,
 };
