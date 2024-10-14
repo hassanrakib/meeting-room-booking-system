@@ -21,4 +21,12 @@ router.get('/:id', RoomControllers.getARoomById);
 // get all rooms
 router.get('/', RoomControllers.getAllRooms);
 
+// update a room by _id
+router.put(
+    '/:id',
+    auth(UserRole.Admin),
+    validateRequest(RoomValidations.updateRoomScheama),
+    RoomControllers.updateARoomById
+);
+
 export const RoomRoutes = router;

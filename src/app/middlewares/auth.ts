@@ -10,25 +10,28 @@ import { CustomJwtPayload } from '../interface';
 const auth = (...userRoles: UserRole[]) => {
     return catchAsync(async (req, res, next) => {
         // get the token from the request's header
-        const token = req.headers.authorization?.split(" ")[1];
+        const token = req.headers.authorization?.split(' ')[1];
 
         // if token is not sent with the client request
-        if(!token) {
+        if (!token) {
             throw new AppError(httpStatus.UNAUTHORIZED, 'Unauthorized Access!');
         }
 
         // decoded data
-        const decoded = jwt.verify(token, config.jwt_access_secret!) as CustomJwtPayload;
+        const decoded = jwt.verify(
+            token,
+            config.jwt_access_secret!
+        ) as CustomJwtPayload;
 
         // check if user exist in the database
-        const user = await User.findOne({email: decoded.email});
+        const user = await User.findOne({ email: decoded.email });
 
-        if(!user) {
+        if (!user) {
             throw new AppError(httpStatus.NOT_FOUND, 'User is not found!');
         }
 
         // check if the right user trying to access the data
-        if(!userRoles.includes(user.role)) {
+        if (!userRoles.includes(user.role)) {
             throw new AppError(httpStatus.UNAUTHORIZED, 'Unauthorized access!');
         }
 
@@ -37,7 +40,6 @@ const auth = (...userRoles: UserRole[]) => {
 
         // now proceed to the next middleware
         next();
-
     });
 };
 

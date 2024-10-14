@@ -41,7 +41,7 @@ const errorHandler: ErrorRequestHandler = (err: unknown, req, res, next) => {
     }
 
     // err.code === 11000 makes sure that it is a mongoose duplicate value error
-    if(err instanceof mongoose.mongo.MongoServerError && err.code === 11000) {
+    if (err instanceof mongoose.mongo.MongoServerError && err.code === 11000) {
         // type assertion to tell typescript compiler that the error also has the keyValue field
         const duplicateError = err as Error11000;
         const simplifiedError = handleDuplicateValueError(duplicateError);
@@ -50,14 +50,14 @@ const errorHandler: ErrorRequestHandler = (err: unknown, req, res, next) => {
         errorMessages = simplifiedError.errorMessages;
     }
 
-    if(err instanceof ZodError) {
+    if (err instanceof ZodError) {
         const simplifiedError = handleZodError(err);
         statusCode = simplifiedError.statusCode;
         message = simplifiedError.message;
         errorMessages = simplifiedError.errorMessages;
     }
 
-    if(err instanceof mongoose.Error.CastError) {
+    if (err instanceof mongoose.Error.CastError) {
         const simplifiedError = handleCastError(err);
         statusCode = simplifiedError.statusCode;
         message = simplifiedError.message;

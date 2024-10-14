@@ -42,18 +42,22 @@ const getAllRooms = catchAsync(async (req, res) => {
 
 // update a room by _id
 const updateARoomById = catchAsync(async (req, res) => {
-    // const updatedRoom = 
+    const updatedRoom = await RoomServices.updateARoomByIdInDB(
+        req.params.id,
+        req.body as Partial<IRoom>
+    );
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: "Room updated successfully!",
+        message: 'Room updated successfully!',
         data: updatedRoom,
-    })
-})
+    });
+});
 
 export const RoomControllers = {
     createRoom,
     getARoomById,
     getAllRooms,
+    updateARoomById,
 };

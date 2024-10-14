@@ -13,8 +13,16 @@ const retrieveRoomsFromDB = async () => {
     return await Room.find();
 };
 
+const updateARoomByIdInDB = async (id: string, roomPartial: Partial<IRoom>) => {
+    return await Room.findByIdAndUpdate(id, roomPartial, {
+        new: true,
+        runValidators: true,
+    });
+};
+
 export const RoomServices = {
     insertNewRoomToDB,
     retrieveARoomByIdFromDB,
     retrieveRoomsFromDB,
+    updateARoomByIdInDB,
 };

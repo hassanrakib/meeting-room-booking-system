@@ -19,7 +19,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
                 message: (props: { value: string }) =>
                     `${props.value} is not a valid email address!`,
             },
-            unique: true
+            unique: true,
         },
         // 'password' property will be omitted when a user document is retrieved
         password: {
