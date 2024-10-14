@@ -55,9 +55,24 @@ const updateARoomById = catchAsync(async (req, res) => {
     });
 });
 
+// delete a room by _id
+const deleteARoomById = catchAsync(async (req, res) => {
+    const deletedRoom = await RoomServices.softDeleteARoomByIdInDB(
+        req.params.id
+    );
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: 'Room deleted successfully!',
+        data: deletedRoom,
+    });
+});
+
 export const RoomControllers = {
     createRoom,
     getARoomById,
     getAllRooms,
     updateARoomById,
+    deleteARoomById,
 };

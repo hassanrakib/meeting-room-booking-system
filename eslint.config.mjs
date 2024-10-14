@@ -26,7 +26,7 @@ export default tseslint.config(
         },
         rules: {
             '@typescript-eslint/no-non-null-assertion': 'off',
-            '@typescript-eslint/no-deprecated': 'off',
+            '@typescript-eslint/restrict-template-expressions': 'off',
         },
     },
     eslintConfigPrettier

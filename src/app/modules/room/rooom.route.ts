@@ -29,4 +29,7 @@ router.put(
     RoomControllers.updateARoomById
 );
 
+// delete a room by _id
+router.delete('/:id', auth(UserRole.Admin), RoomControllers.deleteARoomById);
+
 export const RoomRoutes = router;

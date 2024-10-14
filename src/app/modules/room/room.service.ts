@@ -20,9 +20,20 @@ const updateARoomByIdInDB = async (id: string, roomPartial: Partial<IRoom>) => {
     });
 };
 
+const softDeleteARoomByIdInDB = async (id: string) => {
+    return await Room.findByIdAndUpdate(
+        id,
+        { isDeleted: true },
+        {
+            new: true,
+        }
+    );
+};
+
 export const RoomServices = {
     insertNewRoomToDB,
     retrieveARoomByIdFromDB,
     retrieveRoomsFromDB,
     updateARoomByIdInDB,
+    softDeleteARoomByIdInDB,
 };
