@@ -1,3 +1,6 @@
+import httpStatus from 'http-status';
+import AppError from '../../errors/AppError';
+import { Room } from '../room/room.model';
 import ISlot from './slot.interface';
 import { Slot } from './slot.model';
 import {
@@ -10,6 +13,20 @@ const createNewSlotsInDB = async ({
     endTime,
     ...commonSlotData
 }: ISlot) => {
+
+    // validation
+    // check room exists in the db
+    const room = await Room.findById(commonSlotData.room);
+
+    if (!room) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Room is not found!');
+    }
+
+    // if room is deleted
+    if(room.isDeleted) {
+        throw new AppError(httpStatus.BAD_REQUEST, 'Room is not available!');
+    }
+
     // assuming that slot duration is 60 minutes
     const slotDurationInMs = 60 * 60 * 1000;
 
