@@ -7,3 +7,7 @@ export const convertTimeStringToMilliseconds = (timeString: string): number => {
         Number(timeString.split(':')[1])
     ).getTime();
 };
+
+export const prependZeroIfNeeded = (hourOrMin: number) => {
+    return hourOrMin.toString().padStart(2, '0');
+}

@@ -1,6 +1,9 @@
 import ISlot from './slot.interface';
 import { Slot } from './slot.model';
-import { convertTimeStringToMilliseconds } from './slot.utils';
+import {
+    convertTimeStringToMilliseconds,
+    prependZeroIfNeeded,
+} from './slot.utils';
 
 const createNewSlotsInDB = async ({
     startTime,
@@ -20,14 +23,19 @@ const createNewSlotsInDB = async ({
         const endDate = new Date((t += slotDurationInMs));
         slots.push({
             ...commonSlotData,
-            startTime: `${startDate.getHours().toString().padStart(2, '0')}:${startDate.getMinutes().toString().padStart(2, '0')}`,
-            endTime: `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`,
+            startTime: `${prependZeroIfNeeded(startDate.getHours())}:${prependZeroIfNeeded(startDate.getMinutes())}`,
+            endTime: `${prependZeroIfNeeded(endDate.getHours())}:${prependZeroIfNeeded(endDate.getMinutes())}`,
         });
     }
 
     return await Slot.create(slots);
 };
 
+const retrieveAvailableSlotsFromDB = async (query: Record<string, string>) => {
+    return await Slot.find({ ...query, isBooked: false }).populate('room');
+};
+
 export const SlotServices = {
     createNewSlotsInDB,
+    retrieveAvailableSlotsFromDB,
 };
