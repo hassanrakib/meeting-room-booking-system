@@ -1,10 +1,12 @@
 import httpStatus from "http-status";
 import catchAsync from "../../utils/catch-async";
 import sendResponse from "../../utils/send-response";
+import { BookingServices } from "./booking.service";
+import IBooking from "./booking.interface";
 
-const createANewBooking = catchAsync(async (req, res) => {
+const createANewBooking = catchAsync(async (req: {user: {email: string}, body: IBooking}, res) => {
 
-    const newBooking = {};
+    const newBooking = await BookingServices.insertNewBookingToDB(req.user.email, req.body);
 
     sendResponse(res, {
         success: true,
