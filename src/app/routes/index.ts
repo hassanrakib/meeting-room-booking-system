@@ -2,7 +2,7 @@ import express from 'express';
 import { UserRoutes } from '../modules/user/user.route';
 import { RoomRoutes } from '../modules/room/rooom.route';
 import { SlotRoutes } from '../modules/slot/slot.route';
-import { BookingRoutes } from '../modules/booking/booking.route';
+import { BookingRoutes, myBookingRoute } from '../modules/booking/booking.route';
 
 // a mini application to handle different routes
 export const router = express.Router();
@@ -24,6 +24,10 @@ const moduleRoutes = [
         path: '/bookings',
         route: BookingRoutes,
     },
+    {
+        path: '/my-bookings',
+        route: myBookingRoute,
+    }
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

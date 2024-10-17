@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { User } from '../user/user.model';
-import IBooking from './booking.interface';
+import IBooking, { BookingStatus } from './booking.interface';
 import { Slot } from '../slot/slot.model';
 import { Room } from '../room/room.model';
 import mongoose from 'mongoose';
@@ -111,9 +111,43 @@ const insertNewBookingToDB = async (userEmail: string, booking: IBooking) => {
 
 const retrieveBookingsFromDB = async () => {
     return await Booking.find().populate(['room', 'user', 'slots']);
+};
+
+const retrieveMyBookingsFromDB = async (loggedInUserEmail: string) => {
+    // get the user's _id
+    const user = await User.findOne({ email: loggedInUserEmail });
+
+    return await Booking.find({ user: user!._id })
+        .populate(['slots', 'room'])
+        .select('-user');
+};
+
+const updateBookingStatusInDB = async (
+    id: string,
+    { isConfirmed }: { isConfirmed: BookingStatus }
+) => {
+    return await Booking.findByIdAndUpdate(
+        id,
+        { isConfirmed },
+        {
+            new: true,
+            runValidators: true,
+        }
+    );
+};
+
+const deleteBookingByIdFromDB = async (id: string) => {
+    const deletedBooking = await Booking.findByIdAndUpdate(id, {isDeleted: true}, {new: true});
+
+    if(!deletedBooking) throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete the booking!');
+
+    return deletedBooking;
 }
 
 export const BookingServices = {
     insertNewBookingToDB,
     retrieveBookingsFromDB,
+    retrieveMyBookingsFromDB,
+    updateBookingStatusInDB,
+    deleteBookingByIdFromDB,
 };

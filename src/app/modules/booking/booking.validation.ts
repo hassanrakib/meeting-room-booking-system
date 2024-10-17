@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { BookingStatus } from './booking.interface';
 
 const createBookingSchema = z.object({
     body: z.object({
@@ -9,6 +10,13 @@ const createBookingSchema = z.object({
     }),
 });
 
+const updateBookingStatusSchema = z.object({
+    body: z.object({
+        isConfirmed: z.nativeEnum(BookingStatus),
+    })
+})
+
 export const BookingValidations = {
     createBookingSchema,
+    updateBookingStatusSchema,
 };
