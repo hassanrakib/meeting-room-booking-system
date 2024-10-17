@@ -13,23 +13,27 @@ const insertNewBookingToDB = async (userEmail: string, booking: IBooking) => {
     // check if the same user who is logged in creating a booking
     const user = await User.findOne({ email: userEmail }).select('_id').lean();
 
-    if (user?._id !== booking.user) {
+    if (String(user?._id) !== String(booking.user)) {
         throw new AppError(
             httpStatus.FORBIDDEN,
             'You are not authorized to create a booking for another user!'
         );
     }
 
-    // check if the slots do exist, are not booked and equal or greater than the date of the booking
+    // check if the slots do exist,
+    // are of the correct room
+    // are not booked
+    // and equal or greater than the date of the booking
     const slotsFound = await Slot.find({
         _id: { $in: booking.slots },
+        room: booking.room,
         isBooked: false,
     }).lean();
 
     if (slotsFound.length !== booking.slots.length) {
         throw new AppError(
             httpStatus.NOT_FOUND,
-            'One or more slots are not available!'
+            'One or more slots are maybe do not exist, or booked, or room information is wrong!'
         );
     }
 
@@ -69,26 +73,35 @@ const insertNewBookingToDB = async (userEmail: string, booking: IBooking) => {
         });
 
         // if booking creation fails
-        if(!newBooking.length) {
-            throw new AppError(httpStatus.BAD_REQUEST, 'Booking creation failed!');
+        if (!newBooking.length) {
+            throw new AppError(
+                httpStatus.BAD_REQUEST,
+                'Booking creation failed!'
+            );
         }
 
         // update slots isBooked property to true
-        const slotsUpdateResult = await Slot.updateMany({_id: {$in: booking.slots}}, {isBooked: true}, {session});
+        const slotsUpdateResult = await Slot.updateMany(
+            { _id: { $in: booking.slots } },
+            { isBooked: true },
+            { session }
+        );
 
         // if slots isBooked property update fails
-        if(slotsUpdateResult.modifiedCount !== slotsFound.length) {
-            throw new AppError(httpStatus.BAD_REQUEST, 'Failed to update slot(s) isBooked property!');
+        if (slotsUpdateResult.modifiedCount !== slotsFound.length) {
+            throw new AppError(
+                httpStatus.BAD_REQUEST,
+                'Failed to update slot(s) isBooked property!'
+            );
         }
 
         // commit the changes to the db
         await session.commitTransaction();
         // end the session
-        await session.endSession()
+        await session.endSession();
 
         // populate reference fields and pass the new booking to the controller
         return await newBooking[0].populate(['room', 'slots', 'user']);
-
     } catch (err) {
         await session.abortTransaction();
         await session.endSession();
@@ -96,6 +109,11 @@ const insertNewBookingToDB = async (userEmail: string, booking: IBooking) => {
     }
 };
 
+const retrieveBookingsFromDB = async () => {
+    return await Booking.find().populate(['room', 'user', 'slots']);
+}
+
 export const BookingServices = {
     insertNewBookingToDB,
+    retrieveBookingsFromDB,
 };

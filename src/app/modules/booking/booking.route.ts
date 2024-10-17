@@ -10,4 +10,6 @@ const router = express.Router();
 
 router.post('/', auth(UserRole.User), validateRequest(BookingValidations.createBookingSchema), BookingControllers.createANewBooking);
 
+router.get('/', auth(UserRole.Admin), BookingControllers.getAllBookings);
+
 export const BookingRoutes = router;

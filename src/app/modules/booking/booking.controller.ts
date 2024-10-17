@@ -16,7 +16,19 @@ const createANewBooking = catchAsync(async (req: {user: {email: string}, body: I
     })
 })
 
+const getAllBookings = catchAsync(async (req, res) => {
+    const bookings = await BookingServices.retrieveBookingsFromDB();
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "All bookings retrieved successfully!",
+        data: bookings,
+    })
+})
+
 
 export const BookingControllers = {
     createANewBooking,
+    getAllBookings,
 }
