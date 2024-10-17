@@ -5,7 +5,7 @@ interface ResponseData<T> {
     success: boolean;
     message: string;
     token?: string;
-    data: T;
+    data?: T;
 }
 
 export default function <T>(res: Response, data: ResponseData<T>) {

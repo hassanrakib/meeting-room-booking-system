@@ -7,13 +7,27 @@ import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
-router.post('/', auth(UserRole.User), validateRequest(BookingValidations.createBookingSchema), BookingControllers.createANewBooking);
+router.post(
+    '/',
+    auth(UserRole.User),
+    validateRequest(BookingValidations.createBookingSchema),
+    BookingControllers.createANewBooking
+);
 
 router.get('/', auth(UserRole.Admin), BookingControllers.getAllBookings);
 
-router.put('/:id', auth(UserRole.Admin), validateRequest(BookingValidations.updateBookingStatusSchema), BookingControllers.updateBookingStatus);
+router.put(
+    '/:id',
+    auth(UserRole.Admin),
+    validateRequest(BookingValidations.updateBookingStatusSchema),
+    BookingControllers.updateBookingStatus
+);
 
-router.delete("/:id", auth(UserRole.Admin), BookingControllers.deleteBookingById);
+router.delete(
+    '/:id',
+    auth(UserRole.Admin),
+    BookingControllers.deleteBookingById
+);
 
 export const BookingRoutes = router;
 

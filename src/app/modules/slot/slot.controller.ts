@@ -5,7 +5,6 @@ import { SlotServices } from './slot.service';
 import ISlot from './slot.interface';
 
 const createNewSlots = catchAsync(async (req: { body: ISlot }, res) => {
-
     const slots = await SlotServices.createNewSlotsInDB(req.body);
 
     sendResponse(res, {
@@ -22,8 +21,17 @@ const getAvailableSlots = catchAsync(async (req, res) => {
     if (req.query.date) query.date = req.query.date as string;
     if (req.query.roomId) query.room = req.query.roomId as string;
 
-
     const slots = await SlotServices.retrieveAvailableSlotsFromDB(query);
+
+    // if no data found
+    if (!slots.length) {
+        sendResponse(res, {
+            success: false,
+            statusCode: httpStatus.NOT_FOUND,
+            message: 'No Data Found!',
+            data: [],
+        });
+    }
 
     sendResponse(res, {
         success: true,

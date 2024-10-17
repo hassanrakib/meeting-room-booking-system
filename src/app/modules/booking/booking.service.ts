@@ -137,12 +137,20 @@ const updateBookingStatusInDB = async (
 };
 
 const deleteBookingByIdFromDB = async (id: string) => {
-    const deletedBooking = await Booking.findByIdAndUpdate(id, {isDeleted: true}, {new: true});
+    const deletedBooking = await Booking.findByIdAndUpdate(
+        id,
+        { isDeleted: true },
+        { new: true }
+    );
 
-    if(!deletedBooking) throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete the booking!');
+    if (!deletedBooking)
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            'Failed to delete the booking!'
+        );
 
     return deletedBooking;
-}
+};
 
 export const BookingServices = {
     insertNewBookingToDB,

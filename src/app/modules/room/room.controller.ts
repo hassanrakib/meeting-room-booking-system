@@ -20,6 +20,16 @@ const createRoom = catchAsync(async (req: { body: IRoom }, res) => {
 const getARoomById = catchAsync(async (req, res) => {
     const room = await RoomServices.retrieveARoomByIdFromDB(req.params.id);
 
+    // if no data found
+    if (!room) {
+        sendResponse(res, {
+            success: false,
+            statusCode: httpStatus.NOT_FOUND,
+            message: 'No Data Found!',
+            data: [],
+        });
+    }
+
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -31,6 +41,16 @@ const getARoomById = catchAsync(async (req, res) => {
 // get all rooms
 const getAllRooms = catchAsync(async (req, res) => {
     const rooms = await RoomServices.retrieveRoomsFromDB();
+
+    // if no data found
+    if (!rooms.length) {
+        sendResponse(res, {
+            success: false,
+            statusCode: httpStatus.NOT_FOUND,
+            message: 'No Data Found!',
+            data: [],
+        });
+    }
 
     sendResponse(res, {
         statusCode: httpStatus.OK,

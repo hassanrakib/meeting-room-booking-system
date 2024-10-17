@@ -23,6 +23,16 @@ const createANewBooking = catchAsync(
 const getAllBookings = catchAsync(async (req, res) => {
     const bookings = await BookingServices.retrieveBookingsFromDB();
 
+    // if no data found
+    if (!bookings.length) {
+        sendResponse(res, {
+            success: false,
+            statusCode: httpStatus.NOT_FOUND,
+            message: 'No Data Found!',
+            data: [],
+        });
+    }
+
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
@@ -35,6 +45,16 @@ const getMyBookings = catchAsync(async (req, res) => {
     const myBookings = await BookingServices.retrieveMyBookingsFromDB(
         req.user.email
     );
+
+    // if no data found
+    if (!myBookings.length) {
+        sendResponse(res, {
+            success: false,
+            statusCode: httpStatus.NOT_FOUND,
+            message: 'No Data Found!',
+            data: [],
+        });
+    }
 
     sendResponse(res, {
         success: true,
@@ -59,15 +79,17 @@ const updateBookingStatus = catchAsync(async (req, res) => {
 });
 
 const deleteBookingById = catchAsync(async (req, res) => {
-    const deletedBooking = await BookingServices.deleteBookingByIdFromDB(req.params.id);
+    const deletedBooking = await BookingServices.deleteBookingByIdFromDB(
+        req.params.id
+    );
 
     sendResponse(res, {
         success: true,
         statusCode: httpStatus.OK,
         message: 'Booking deleted successfully!',
         data: deletedBooking,
-    });    
-})
+    });
+});
 
 export const BookingControllers = {
     createANewBooking,

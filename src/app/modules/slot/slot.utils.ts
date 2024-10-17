@@ -10,4 +10,4 @@ export const convertTimeStringToMilliseconds = (timeString: string): number => {
 
 export const prependZeroIfNeeded = (hourOrMin: number) => {
     return hourOrMin.toString().padStart(2, '0');
-}
+};

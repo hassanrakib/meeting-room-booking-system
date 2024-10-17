@@ -13,7 +13,6 @@ const createNewSlotsInDB = async ({
     endTime,
     ...commonSlotData
 }: ISlot) => {
-
     // validation
     // check room exists in the db
     const room = await Room.findById(commonSlotData.room);
@@ -23,7 +22,7 @@ const createNewSlotsInDB = async ({
     }
 
     // if room is deleted
-    if(room.isDeleted) {
+    if (room.isDeleted) {
         throw new AppError(httpStatus.BAD_REQUEST, 'Room is not available!');
     }
 

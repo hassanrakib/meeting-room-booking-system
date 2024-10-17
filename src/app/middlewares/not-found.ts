@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import sendResponse from '../utils/send-response';
 
 export default function notFound(req: Request, res: Response) {
-    res.status(httpStatus.NOT_FOUND).json({
+    sendResponse(res, {
+        statusCode: httpStatus.NOT_FOUND,
         success: false,
-        message: httpStatus[404],
-        error: '',
+        message: 'Not Found!',
     });
 }
